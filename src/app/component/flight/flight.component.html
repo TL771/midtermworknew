@@ -51,7 +51,7 @@
       <label>Arrival <label style="color:red;" *ngIf="flightform.hasError('required','arrival')">*</label ></label><br>
       <mat-form-field appearance="fill">
         <mat-label>Arrival</mat-label>
-        <input matInput [matDatepicker]="picker3" [min]="flightform.value.departure" formControlName="arrival" [disabled] = "flightform.value.departure == ''">
+        <input matInput [matDatepicker]="picker3" [min]="flightform.value.departure" formControlName="arrival" [disabled] = "flightform.hasError('required','departure')">
         <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
         <mat-datepicker #picker3></mat-datepicker>
       </mat-form-field>
