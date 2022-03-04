@@ -35,6 +35,16 @@ export class FlightComponent implements OnInit {
     console.log(value);
     this.flightdata.push(value);
     alert("You Submit.");
-    this.flightform.reset()
+    this.flightform.reset({
+      fullName: "",
+      from: "",
+      to: "",
+      type: "",
+      adults:0,
+      departure: "",
+      children: 0,
+      infants: 0,
+      arrival: "",
+    })
   }
 }
