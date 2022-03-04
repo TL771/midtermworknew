@@ -1,0 +1,115 @@
+<form class="formflight col" [formGroup]="flightform">
+  <h1 class="text-center m-4">Book a Flight</h1>
+  <div class="line row m-3">
+    <div class="col">
+      <label>Full Name <label style="color:red;" *ngIf="flightform.hasError('required','fullName')">*</label ></label><br>
+      <input type="text" class="form-control" formControlName="fullName" />
+
+      <label style="color:red;font-size:medium;margin:10px 0;" *ngIf="flightform.get('fullName')?.errors?.['minlength']">- ชื่อ นามสกุล ต้องมากกว่า 5 ตัว </label >
+    </div>
+  </div>
+  <div class="line row m-3">
+    <div class="col">
+      <label>Form <label style="color:red;" *ngIf="flightform.hasError('required','from')">*</label ></label><br>
+      <select class="form-select" aria-label=".form-select-lg example" formControlName="from">
+        <option value="" selected hidden>Please select..</option>
+        <ng-container *ngFor="let data of countrydata">
+          <option *ngIf="flightform.value.to != data.name" value="{{data.name}}">{{data.name}}</option>
+        </ng-container>
+      </select>
+    </div>
+    <div class="col">
+      <label>To <label style="color:red;" *ngIf="flightform.hasError('required','to')">*</label ></label><br>
+      <select class="form-select" aria-label=".form-select-lg example" formControlName="to">
+        <option value="" selected hidden>Please select..</option>
+        <ng-container *ngFor="let data of countrydata">
+          <option *ngIf="flightform.value.from != data.name" value="{{data.name}}">{{data.name}}</option>
+        </ng-container>
+      </select>
+    </div>
+  </div>
+  <div class="line row m-3">
+    <div class="col-md-4">
+      <label>Trip Type <label style="color:red;" *ngIf="flightform.hasError('required','type')">*</label ></label>
+      <div class="line">
+        <input class="col-md-1 form-check-input  m-2" type="radio" id="Oneway" name="type" value="One way" formControlName="type">
+        <label class="form-check-label  m-1" for="Oneway">One way</label>
+        <input class="col-md-1 form-check-input m-2" type="radio" id="Return" name="type" value="Return" formControlName="type">
+        <label class="form-check-label  m-1" for="Return">Return</label>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <label>Departure <label style="color:red;" *ngIf="flightform.hasError('required','departure')">*</label ></label><br>
+      <mat-form-field appearance="fill">
+        <mat-label>Departure</mat-label>
+        <input matInput [matDatepicker]="dp" [min]="date" formControlName="departure">
+        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+        <mat-datepicker #dp></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <label>Arrival <label style="color:red;" *ngIf="flightform.hasError('required','arrival')">*</label ></label><br>
+      <mat-form-field appearance="fill">
+        <mat-label>Arrival</mat-label>
+        <input matInput [matDatepicker]="picker3" [min]="flightform.value.departure" formControlName="arrival" [disabled] = "flightform.value.departure == ''">
+        <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+        <mat-datepicker #picker3></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="line row m-3">
+    <div class="col-md-4" >
+      <label>Adults <label style="color:red;" *ngIf="flightform.hasError('min','adults')">*</label ></label><br>
+      <input class="form-control" type="number" min="0" max="10" oninput="validity.valid||(value=0);" formControlName="adults">
+      <label>- กรอกเลขจำนวนเต็ม 1 - 10 <br>- ต้องมากกว่า 1 คนเสมอ</label>
+    </div>
+    <div class="col-md-4">
+      <label>Children</label><br>
+      <input class="form-control" type="number" min="0" max="10" oninput="validity.valid||(value=0);" formControlName="children">
+      <label>กรอกเลขจำนวนเต็ม 0 - 10 </label>
+    </div>
+    <div class="col-md-4">
+      <label>Infants</label><br>
+      <input class="form-control" type="number" min="0" max="10" oninput="validity.valid||(value=0);" formControlName="infants">
+      <label>กรอกเลขจำนวนเต็ม 0 - 10</label>
+    </div>
+  </div>
+  <div class="row">
+    <button type="button" class="btn btn-primary" [disabled]="flightform.invalid" (click)="OnSubmit(flightform.value)">Submit</button>
+  </div>
+</form>
+<hr>
+<!-- <div>
+  {{flightform.value | json}}
+</div> -->
+
+<table class="table table-hover col">
+  <thead>
+    <tr>
+      <th scope="col">Full Name</th>
+      <th scope="col">From</th>
+      <th scope="col">To</th>
+      <th scope="col">Type</th>
+      <th scope="col">Departure</th>
+      <th scope="col">Arrival</th>
+      <th scope="col">Adults</th>
+      <th scope="col">Children</th>
+      <th scope="col">Infants</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let f of flightdata">
+      <td>{{ f.fullName }}</td>
+      <td>{{ f.from }}</td>
+      <td>{{ f.to }}</td>
+      <td>{{ f.type }}</td>
+      <td>{{ f.departure | date: "d MMM y" }}</td>
+      <td>{{ f.arrival | date: "d MMM y" }}</td>
+      <td>{{ f.adults }}</td>
+      <td>{{ f.children }}</td>
+      <td>{{ f.infants }}</td>
+    </tr>
+  </tbody>
+</table>
+
+
